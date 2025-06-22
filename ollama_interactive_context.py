@@ -89,6 +89,7 @@ class GenerateNewContextCommand(sublime_plugin.TextCommand):
         self.view.set_scratch(True)
         self.view.set_name("scratch_ollama_context")
         self.view.assign_syntax("Packages/JSON/JSON.sublime-syntax")
+        self.view.settings().set("word_wrap", True)
         self.view.insert(edit, 0, '{"model": "filler_model", "stream": false, "messages": [{"role": "user", "content": "this is filler text"}]}')
         try_prettyjson()
 
