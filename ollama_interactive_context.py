@@ -65,11 +65,11 @@ class OllamaInteractiveContextCommand(sublime_plugin.TextCommand):
 
         # Send data to ollama server
         url: str = "http://localhost:11434/api/chat"
-        model: str = "zshrc/llama-3some-8b:latest"
+        # model: str = "gemma3:1b"
 
         js: dict = json.loads(self.view.substr(sublime.Region(0, self.view.size())))
         # print(js)
-        js["model"] = model
+        # js["model"] = model
         res = requests.post(url, json=js).json()  # TODO check for errors like 404
         # print(res)
         js["messages"].append(res["message"])
