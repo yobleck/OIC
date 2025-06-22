@@ -1,0 +1,18 @@
+[
+    {
+        "caption": "OIC: run interactive context",
+        "command": "ollama_interactive_context"
+    },
+    {
+        "caption": "OIC: generate new context",
+        "command": "generate_new_context"
+    },
+    {
+        "caption": "OIC: append user input",
+        "command": "append_user_input"
+    },
+    {
+        "caption": "OIC: list models",
+        "command": "list_models"
+    }
+]
