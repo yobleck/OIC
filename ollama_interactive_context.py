@@ -40,13 +40,31 @@ def try_prettyjson():
 def is_not_json_file():
     if sublime.active_window().active_view().syntax() != sublime.Syntax('Packages/JSON/JSON.sublime-syntax', 'JSON', False, 'source.json'):
         print("not json file, aborting")
+        sublime.error_message("not json file, aborting")
         return True
     return False
 
 
+def is_server_running():  # TODO use this
+    proc = subprocess.run(["/bin/bash", "-c", "pgrep ollama"],
+                          stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE,
+                          shell=False)
+    # print(proc)
+    if not proc.stdout.decode():
+        sublime.error_message("ollama server not found, aborting")
+        print("ollama server not found, aborting")
+        return False
+    elif not proc.stdout.decode().split("\n")[0].isdigit():
+        sublime.error_message("pgrep output not integer, aborting")
+        print("pgrep output not integer, aborting")
+        return False
+    return True
+
+
 class OllamaInteractiveContextCommand(sublime_plugin.TextCommand):
     def run(self, edit):
-        print(self.view.size())
+        # print(self.view.size())
         if is_not_json_file():
             return
 
@@ -63,19 +81,37 @@ class OllamaInteractiveContextCommand(sublime_plugin.TextCommand):
             print("pgrep output not integer, aborting")
             return
 
+        sublime.status_message("querying ollama...")
         # Send data to ollama server
+        streaming: bool = False
         url: str = "http://localhost:11434/api/chat"
         # model: str = "gemma3:1b"
 
         js: dict = json.loads(self.view.substr(sublime.Region(0, self.view.size())))
         # print(js)
         # js["model"] = model
-        res = requests.post(url, json=js).json()  # TODO check for errors like 404
-        # print(res)
-        js["messages"].append(res["message"])
-        self.view.erase(edit, sublime.Region(0, self.view.size()))
-        self.view.insert(edit, 0, json.dumps(js))
-        try_prettyjson()
+
+        if streaming:
+            # TODO add message template to file
+            # js["messages"].append({"role": "assistant", "content": ""})
+            sess = requests.Session()
+            with sess.post(url, json=js, stream=True) as res:
+                for line in res.iter_lines(decode_unicode=True):
+                    if line:
+                        # tODO is line a dict or a b''? how to parse?
+                        # js["messages"][-1]["content"] += line
+                        # self.view.erase(edit, sublime.Region(0, self.view.size()))
+                        # self.view.insert(edit, 0, json.dumps(js))
+                        # try_prettyjson()
+                        pass
+
+        else:
+            res = requests.post(url, json=js).json()  # TODO check for errors like 404
+            # print(res)
+            js["messages"].append(res["message"])
+            self.view.erase(edit, sublime.Region(0, self.view.size()))
+            self.view.insert(edit, 0, json.dumps(js))
+            try_prettyjson()
 
 
 class GenerateNewContextCommand(sublime_plugin.TextCommand):
