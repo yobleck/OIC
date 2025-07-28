@@ -1,8 +1,21 @@
 # OIC
-ollama interactive conxext plugin for sublime text 4
+Ollama Interactive Conxext
 
-## Installation
-drop the files in the sublime text ```Packages/User``` folder
+Includes:
+
+        - plugin for sublime text 4
+        
+        - xonsh script that can be used with any editor (requires curl)
+        
+        - TODO micro plugin
+
+## Xonsh Script Installation
+download .xsh file
+
+install xonsh, curl, python3
+
+## Sublime Text 4 Installation
+drop the 3 files in the sublime text ```Packages/User``` folder
 
 often found in ```~/.config/sublime-text``` on Linux
 
@@ -28,7 +41,7 @@ copy keybinds
 
 install [prettyjson](https://packagecontrol.io/packages/Pretty%20JSON) package from packagecontrol.io
 
-## Usage
+## Sublime Text 4 Usage
 run ollama server
 
 temporary: edit url variable in the ollama_interactive_context.py file if needed
