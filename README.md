@@ -12,7 +12,7 @@ Includes:
 ## Xonsh Script Installation
 download .xsh file
 
-install xonsh, curl, python3
+install xonsh, curl, python3, ollama
 
 ## Sublime Text 4 Installation
 drop the 3 files in the sublime text ```Packages/User``` folder
@@ -61,3 +61,8 @@ use the append user input command to add user input json template to the end of 
 edit any mistakes in the model output to avoid poisoned context
 
 repeat
+
+## Bash Sript Installation
+download .sh file
+
+install curl, ollama, jq
