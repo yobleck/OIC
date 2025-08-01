@@ -6,6 +6,8 @@ Includes:
         - plugin for sublime text 4
         
         - xonsh script that can be used with any editor (requires curl)
+
+        - bash script (converted from xonsh by an LLM)
         
         - TODO micro plugin
 
