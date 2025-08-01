@@ -62,7 +62,7 @@ edit any mistakes in the model output to avoid poisoned context
 
 repeat
 
-## Bash Sript Installation
+## Bash Script Installation
 download .sh file
 
 install curl, ollama, jq
