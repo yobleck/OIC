@@ -11,10 +11,17 @@ elif "VISUAL" in ${...}:  # NOTE allow user to pick editor? config file?
 elif "EDITOR" in ${...}:
     editor = $EDITOR
 
-filename = input("file name:\n")  # get file name
-touch @(filename)
-if int($(stat --printf="%s" @(filename)).replace("\"", "")) == 0:  # only add template if file size == 0
-    echo '{"model": "filler_model", "stream": false, "messages": [{"role": "user", "content": "this is filler text"}]}' >> @(filename)
+files = $(ls | grep json).split("\n")[:-1]
+print("0 new file")
+[print(i + 1, f) for i, f in enumerate(files)]
+file_num = input("choose json file:\n")
+if int(file_num) == 0:  # TODO overwrite existing? search subfolders?
+    filename = input("file name:\n")
+    touch @(filename)
+    if int($(stat --printf="%s" @(filename)).replace("\"", "")) == 0:  # only add template if file size == 0
+        echo '{"model": "filler_model", "stream": false, "messages": [{"role": "user", "content": "this is filler text"}]}' >> @(filename)
+else:
+    filename = files[int(file_num) - 1].rstrip("\n")
 
 status = "started"
 while True:
