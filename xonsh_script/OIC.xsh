@@ -1,6 +1,9 @@
 #!/usr/bin/env xonsh
 import json
 
+# $OLLAMA_FLASH_ATTENTION=1  # ollama server not started here
+# $OLLAMA_KV_CACHE_TYPE="q8_0"
+
 if not $(which curl) and not $(which ollama):  # dep check
     print("'curl' and 'ollama' are required for this script")
 
@@ -19,7 +22,7 @@ if int(file_num) == 0:  # TODO overwrite existing? search subfolders?
     filename = input("file name:\n")
     touch @(filename)
     if int($(stat --printf="%s" @(filename)).replace("\"", "")) == 0:  # only add template if file size == 0
-        echo '{"model": "filler_model", "stream": false, "messages": [{"role": "user", "content": "this is filler text"}]}' >> @(filename)
+        echo '{"model": "filler_model", "stream": false, "temp_options": {"num_ctx": 4096}, "messages": [{"role": "user", "content": "this is filler text"}]}' >> @(filename)
 else:
     filename = files[int(file_num) - 1].rstrip("\n")
 
@@ -76,7 +79,7 @@ while True:
             # print(j)
             with open(filename, "w") as f:
                 json.dump(j, f, indent=4)
-            status = "query sent to server"
+            status = f"input sent to server. total time taken: {r['total_duration'] / 1e9:.1f}. input token count: {r['prompt_eval_count']}"
         else:
             print("ollama server not running?")
             break
