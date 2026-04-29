@@ -1,6 +1,8 @@
 # OIC
 Ollama Interactive Conxext
 
+Older simpler version deprecated in favor of [YYAAII](https://github.com/yobleck/YYAAII)
+
 Includes:
 
         - plugin for sublime text 4
